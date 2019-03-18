@@ -22,5 +22,5 @@ type DiscoDoveService interface {
 	 * stores			: all stores that have been initiated for use.
 	 * secure			: a method of encrypting a plain text session if needed, e.g. STARTTLS
 	 */
-    HandleConnection(net.Conn)
+    HandleConnection(c net.Conn, alreadyEncrypted bool)
 }

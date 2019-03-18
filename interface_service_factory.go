@@ -5,7 +5,7 @@
 package discodove_interface_service
 
 import (
- 	"log/syslog"
+	"log/syslog"
 )
 
 type DiscoDoveServiceFactory interface {
@@ -14,8 +14,16 @@ type DiscoDoveServiceFactory interface {
 	 * if you feel compelled to set something up, perhaps a control/query/admin thread or something, then
 	 * do it here.  
 	 *
-	 * name	 	: will be the name of the process, in 99.999% of cases it will just be "discodove"
-	 * logger	: a handle to a syslog.Writer to write your log messages to
+	 * Each plugin is responsible for it's own logging, i suggest syslog, but it's your call.  I was going
+	 * to pass in a *syslog.Writer but it has a mutex in there, and i don't want the service threads to be
+	 * blocking on writing to syslog - so you need to scale logging yourself.
+	 * 
+	 * We use Viper for config - so you can access the discodove config too by using viper, so feel free to
+	 * include your own config directive in there, under it's own section.
+	 *
+	 * name	 	: will be the name of the process, in 99.999% of cases it will just be "discodove" - please
+	 *            prefix your log messages with this.
+	 * syslogFacility : which facility to use in syslog, if that's how you are logging - otherwise ignore it.
 	 */
-	NewService(string, *syslog.Writer) DiscoDoveService
+	NewService(name string, syslogFacility syslog.Priority) DiscoDoveService
 }
