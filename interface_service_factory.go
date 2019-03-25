@@ -6,6 +6,7 @@ package discodove_interface_service
 
 import (
 	"log/syslog"
+	"github.com/spf13/viper"
 )
 
 type DiscoDoveServiceFactory interface {
@@ -24,6 +25,7 @@ type DiscoDoveServiceFactory interface {
 	 * name	 	: will be the name of the process, in 99.999% of cases it will just be "discodove" - please
 	 *            prefix your log messages with this.
 	 * syslogFacility : which facility to use in syslog, if that's how you are logging - otherwise ignore it.
+	 * conf: a Viper subtree configuration for this service as specified in the discodove config.
 	 */
-	NewService(name string, syslogFacility syslog.Priority) DiscoDoveService
+	NewService(name string, syslogFacility syslog.Priority, conf *Viper) DiscoDoveService
 }
